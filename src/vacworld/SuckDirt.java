@@ -9,7 +9,7 @@ import agent.State;
 public final class SuckDirt extends Action {
 
 	public SuckDirt() {
-
+ 
 	}
 
 	/** Return the state that results from the agent sucking up dirt in the
@@ -32,7 +32,7 @@ public final class SuckDirt extends Action {
 		state.setBump(false);
 
 		x = state.getAgentX();
-		y = state.getAgentY();
+		y = state.getAgentY();              
 		state.removeDirt(x,y);
 		return state;
 	}

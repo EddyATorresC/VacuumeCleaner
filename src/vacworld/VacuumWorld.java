@@ -155,7 +155,7 @@ public class VacuumWorld extends Environment {
                 quit = waitForUser();
             }
             try{
-              sleep(500);  
+              sleep(1000);  
             }catch(Exception e){
                 
             }

@@ -9,7 +9,8 @@ public class VacPercept extends Percept{
 	private boolean dirt;
 	private boolean obstacle;
 	private boolean bump;
-
+        private int y;
+        private int x;
 	/** Construct a vacuum world percept. If the agent is in a square that
       has dirt, then create a percept that sees dirt. If the agent is
       directly in front of and facing an obstacle, then the agent can
@@ -19,14 +20,14 @@ public class VacPercept extends Percept{
 
 		super(state,agent);
 
-		int x, y;
+//		int x, y;
 		int viewX, viewY;
 		int dir;
 
 		x = state.getAgentX();
 		y = state.getAgentY();
 		dir = state.getAgentDir();
-
+                
 		// determine dirt
 		if (state.hasDirt(x,y))
 			dirt = true;
@@ -79,4 +80,22 @@ public class VacPercept extends Percept{
 			pstring.append("BUMP");
 		return pstring.toString();
 	}
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+        
+       
 }
