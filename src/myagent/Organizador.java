@@ -24,15 +24,15 @@ import vacworld.TurnRight;
  *
  * @author eddy
  */
-public class Planner {
+public class Organizador {
     
-    InternalState initialState;
+    CentralConfig initialState;
 
-    LinkedList<Action> plan;
+    LinkedList<Action> estrategia;
 
-    public Planner(InternalState initialState) {
+    public Organizador(CentralConfig initialState) {
         this.initialState = initialState;
-        this.plan = new LinkedList<Action>();
+        this.estrategia = new LinkedList<Action>();
     }
 
     /*
@@ -40,26 +40,26 @@ public class Planner {
     accion
      */
     public Action nextAction() {
-        if (initialState.isTurnedOff()) {
+        if (initialState.isshutdown()) {
             return null;
         }
 
         // Si un obstaculo o basura se ve en el camino el agente debe cambiar el
-        // plan a seguir
-        if (initialState.isObstacleSeen() || initialState.isDirtSeen()
-                || initialState.isFeltBump()) {
-            plan.clear();
+        // estrategia a seguir
+        if (initialState.isisObstacle() || initialState.isisDirty()
+                || initialState.isisBump()) {
+            estrategia.clear();
         }
 
-        // Si no hay plan se crea uno
-        if (plan.isEmpty()) {
-            buildPlan();
+        // Si no hay estrategia se crea uno
+        if (estrategia.isEmpty()) {
+            buildestrategia();
         }
 
-        // Se toma la accion del plan y se ejecuta
-        Action next = plan.remove();
+        // Se toma la accion del estrategia y se ejecuta
+        Action next = estrategia.remove();
 
-        // Se actualiza de acuerdo al plan a seguir
+        // Se actualiza de acuerdo al estrategia a seguir
         initialState.update(next);
 
         return next;
@@ -68,28 +68,28 @@ public class Planner {
     /*
     Construye una cola de acciones que el agente tomará
      */
-    private void buildPlan() {
-        final MyVector position = initialState.getAgentPosition();
+    private void buildestrategia() {
+        final MyVector position = initialState.getposition();
         if (initialState.isLocationDirty(position)) { 
             //Si una ubiacion esta sucia el agente solo succionara
-            plan.add(new SuckDirt());
+            estrategia.add(new SuckDirt());
         } else {
-            buildMovementPlan();
+            buildMovementestrategia();
         }
 
-        //Si no hay plan se apaga
-        if (plan.isEmpty()) {
-            plan.add(new ShutOff());
+        //Si no hay estrategia se apaga
+        if (estrategia.isEmpty()) {
+            estrategia.add(new ShutOff());
         }
     }
 
     /*
-    Esto construye un plan de secuencia de movimientos. 
+    Esto construye un estrategia de secuencia de movimientos. 
     Se enfoca en:
      1) Encontrar una posicion sin explorar para explorarla
      2) Encontrar el major camino para llegar a ella
      */
-    private void buildMovementPlan() {
+    private void buildMovementestrategia() {
         // Busca una posicion para explorar en base al menor costo de heuristica
         final MyVector unexplored = findUnexploredPosition();
 
@@ -100,20 +100,20 @@ public class Planner {
 
         // Se utiliza busqueda por A* para encotrar el mejor camino a la cuadrilla
         //no explorada
-        LinkedList<MyVector> path = findPath(unexplored);
+        LinkedList<MyVector> path = findStrategy(unexplored);
 
         // Removemos la primera ubicacion que es la actual
         if (!path.isEmpty()) {
             path.remove();
         }
 
-        MyVector current = initialState.getAgentPosition();
+        MyVector current = initialState.getposition();
         MyVector next;
-        int currentDirection = initialState.getAgentDirection();
+        int currentDirection = initialState.getdirection();
         int nextDirection;
 
         // Itera sobre cada ubicacion en el path para construir la correcta secuencia
-        // de acciones en el plan.
+        // de acciones en el estrategia.
         while (!path.isEmpty()) {
             next = path.remove();
 
@@ -130,16 +130,16 @@ public class Planner {
                     diff = diff + 4;
                 }
                 if (diff == 1) {
-                    plan.add(new TurnRight());
+                    estrategia.add(new TurnRight());
                 } else if (diff == 2) {
-                    plan.add(new TurnRight());
-                    plan.add(new TurnRight());
+                    estrategia.add(new TurnRight());
+                    estrategia.add(new TurnRight());
                 } else if (diff == 3) { // tres giros a la derecha es uno a la izquierda
-                    plan.add(new TurnLeft());
+                    estrategia.add(new TurnLeft());
                 }
             }
 
-            plan.add(new GoForward());
+            estrategia.add(new GoForward());
 
             // se mueve a la siguiente direccion en el path
             current = next;
@@ -152,24 +152,22 @@ public class Planner {
      */
     private MyVector findUnexploredPosition() {
        
-        final HashMap<MyVector, LocationInformation> map = initialState.getWorldMap();
-        Entry<MyVector, LocationInformation> pair;
+        final HashMap<MyVector, PositionStatus> map = initialState.getsetInfo();
+        Entry<MyVector, PositionStatus> pair;
 
         int lowestCost = Integer.MAX_VALUE; 
         int cost;
         MyVector lowestCostPosition = null;
 
         // Itera sobre el mapa para buscar la menor heuristica
-        Iterator<Entry<MyVector, LocationInformation>> it = map.entrySet()
-                .iterator();
+        Iterator<Entry<MyVector, PositionStatus>> it = map.entrySet().iterator();
         MyVector pos;
 
         while (it.hasNext()) {
             pair = it.next();
             pos = pair.getKey();
             if (!initialState.isLocationExplored(pos) && !initialState.isLocationObstacle(pos)) {
-                cost = Heuristics.estimateCost(initialState.getAgentPosition(), pos,
-                        initialState.getAgentDirection());
+                cost = Costos.costoEstimado(initialState.getposition(), pos, initialState.getdirection());
 
                 if (cost < lowestCost) {
                     lowestCost = cost;
@@ -185,10 +183,10 @@ public class Planner {
     /*Mediante el algoritmo A* de busqueda se encuentra el camino mas corto entre
       la posicion actual y la posicion objetivo
      */
-    private LinkedList<MyVector> findPath(MyVector goal) {
+    private LinkedList<MyVector> findStrategy(MyVector goal) {
         
-        MyVector start = initialState.getAgentPosition();
-        int currentDirection = initialState.getAgentDirection();
+        MyVector start = initialState.getposition();
+        int currentDirection = initialState.getdirection();
 
         
         int tentativeG;
@@ -200,9 +198,8 @@ public class Planner {
         final HashMap<MyVector, Integer> f = new HashMap<MyVector, Integer>();
 
         // Se inicializa los valores de f y g a 0
-        HashMap<MyVector, LocationInformation> worldMap = initialState.getWorldMap();
-        Iterator<Entry<MyVector, LocationInformation>> it = worldMap.entrySet()
-                .iterator();
+        HashMap<MyVector, PositionStatus> setInfo = initialState.getsetInfo();
+        Iterator<Entry<MyVector, PositionStatus>> it = setInfo.entrySet().iterator();
         while (it.hasNext()) {
             MyVector pos = it.next().getKey();
             f.put(pos, 0);
@@ -220,12 +217,9 @@ public class Planner {
 
         Set<MyVector> closed = new HashSet<MyVector>();
         g.put(start, 0);
-        f.put(start,
-                g.get(start)
-                        + Heuristics
-                                .estimateCost(start, goal, currentDirection));
+        f.put(start,g.get(start)+ Costos.costoEstimado(start, goal, currentDirection));
 
-        LinkedList<MyVector> neighbors;
+        LinkedList<MyVector> adyacentes;
         MyVector neighbor;
         MyVector current;
 
@@ -236,7 +230,7 @@ public class Planner {
 
             // Si se llega al goal se construye el path
             if (current.equals(goal)) {
-                return constructPath(cameFrom, goal);
+                return buildStrategy(cameFrom, goal);
             }
 
             // Se guarda current en el conjunto cerrado
@@ -244,17 +238,14 @@ public class Planner {
             closed.add(current);
 
             // Se revisa los adyacentes de current
-            neighbors = initialState.neighbors(current);
-            Iterator<MyVector> it2 = neighbors.iterator();
+            adyacentes = initialState.adyacentes(current);
+            Iterator<MyVector> it2 = adyacentes.iterator();
             while (it2.hasNext()) {
                 neighbor = it2.next();
                 
-                currentDirection = MyVector.vectorToDirection(MyVector.sub(
-                        neighbor, current));
+                currentDirection = MyVector.vectorToDirection(MyVector.sub(neighbor, current));
 
-                tentativeG = g.get(current)
-                        + InternalState.adjacentCost(current, neighbor,
-                                currentDirection);
+                tentativeG = g.get(current)+ CentralConfig.costoOperacion(current, neighbor,currentDirection);
                 if (closed.contains(neighbor) && tentativeG >= g.get(neighbor)) {
                     continue;
                 }
@@ -263,10 +254,7 @@ public class Planner {
                     cameFrom.put(neighbor, current);
                     g.put(neighbor, tentativeG);
 
-                    f.put(neighbor,
-                            g.get(neighbor)
-                                    + Heuristics.estimateCost(neighbor, goal,
-                                            currentDirection));
+                    f.put(neighbor,g.get(neighbor)+ Costos.costoEstimado(neighbor, goal,currentDirection));
                     if (!open.contains(neighbor)) {
                         open.add(neighbor);
                     }
@@ -283,11 +271,11 @@ public class Planner {
     /*
     Se construye recursivamente el path mediante el algoritmo A*
      */
-    private static LinkedList<MyVector> constructPath(
+    private static LinkedList<MyVector> buildStrategy(
             HashMap<MyVector, MyVector> cameFrom, MyVector current) {
         LinkedList<MyVector> p;
         if (cameFrom.containsKey(current)) { 
-            p = constructPath(cameFrom, cameFrom.get(current));
+            p = buildStrategy(cameFrom, cameFrom.get(current));
             p.add(current);
             return p;
         } else {

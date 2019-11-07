@@ -9,31 +9,32 @@ package myagent;
  *
  * @author eddy
  */
-public class LocationInformation {
-   private boolean obstacle;
+public class PositionStatus {
+   
     private boolean dirty;
-    private boolean explored;
+    private boolean analizado;
+    private boolean obstaculo;
 
     /*
     Todas las cuadrillas se asumen al inicio como limpias y sin explorar,
     se puede inicializar con un obstaculo
      */
-    public LocationInformation(boolean obstacle) {
+    public PositionStatus(boolean obstaculo) {
         this.dirty = false;
-        this.explored = false;
-        this.obstacle = obstacle;
+        this.analizado = false;
+        this.obstaculo = obstaculo;
     }
 
-    public boolean isObstacle() {
-        return obstacle;
+    public boolean isobstaculo() {
+        return obstaculo;
     }
 
-    public boolean isExplored() {
-        return explored;
+    public boolean isanalizado() {
+        return analizado;
     }
 
-    public void setExplored(boolean explored) {
-        this.explored = explored;
+    public void setanalizado(boolean analizado) {
+        this.analizado = analizado;
     }
 
     public boolean isDirty() {
@@ -44,7 +45,7 @@ public class LocationInformation {
         this.dirty = dirty;
     }
 
-    public void setObstacle(boolean obstacle) {
-        this.obstacle = obstacle;
+    public void setobstaculo(boolean obstaculo) {
+        this.obstaculo = obstaculo;
     } 
 }

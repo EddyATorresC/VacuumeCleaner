@@ -9,9 +9,9 @@ package myagent;
  *
  * @author eddy
  */
-public class Heuristics {
+public class Costos {
     
-    public static int estimateCost(MyVector inicio, MyVector llegada, int direccion) {
+    public static int costoEstimado(MyVector inicio, MyVector llegada, int direccion) {
         int x = inicio.getX() - llegada.getX();
         int y = inicio.getY() - llegada.getY();
         

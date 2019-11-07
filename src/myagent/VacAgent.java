@@ -17,37 +17,37 @@ import vacworld.VacPercept;
 public class VacAgent extends Agent{
     private final String ID = "1";
     /*
-     La clase InternalState contiene informacion como la posicion del agente,
+     La clase CentralConfig contiene informacion como la posicion del agente,
      su direccion e informacion sobre el mapa global
      */
-    private InternalState internalState;
+    private CentralConfig CentralConfig;
 
     /*
-    Planner ayuda al agente a decidir que accion tomar
+    Organizador ayuda al agente a decidir que accion tomar
      */
-    private Planner planner;
+    private Organizador Organizador;
 
     public VacAgent() {
-        internalState = new InternalState();
-        planner = new Planner(internalState);
+        CentralConfig = new CentralConfig();
+        Organizador = new Organizador(CentralConfig);
     }
 
     @Override
     public void see(Percept p) {
         // Se modifco la funcion para que quede en terminos del Internal State
         // y esta devuelva una accion que es proporcionada por la clase antes
-        // mencionada, en base a un plan y una heuristica.
+        // mencionada, en base a un estrategia y una heuristica.
         if (!(p instanceof VacPercept)) {
             return;
         }
         //Actuliza el internal state en base al percept
-        internalState.update((VacPercept) p);
+        CentralConfig.update((VacPercept) p);
     }
 
     @Override
     public Action selectAction() {
-        //Planner es el encargado de ejecutar las acciones
-        return planner.nextAction();
+        //Organizador es el encargado de ejecutar las acciones
+        return Organizador.nextAction();
     }
 
     @Override

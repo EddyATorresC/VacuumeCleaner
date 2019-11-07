@@ -3,17 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/eddy/Downloads/PROJECT-3/VacWorldProj/src/vacworld/SuckDirt.java</file>
             <file>file:/home/eddy/Downloads/PROJECT-3/VacWorldProj/src/vacworld/StateSelector.java</file>
-            <file>file:/home/eddy/Downloads/PROJECT-3/VacWorldProj/src/vacworld/TurnLeft.java</file>
-            <file>file:/home/eddy/Downloads/PROJECT-3/VacWorldProj/src/agent/Environment.java</file>
             <file>file:/home/eddy/Downloads/PROJECT-3/VacWorldProj/src/vacworld/ShutOff.java</file>
-            <file>file:/home/eddy/Downloads/PROJECT-3/VacWorldProj/src/vacworld/GoForward.java</file>
+            <file>file:/home/eddy/Downloads/PROJECT-3/VacWorldProj/src/myagent/Heuristics.java</file>
             <file>file:/home/eddy/Downloads/PROJECT-3/VacWorldProj/src/myagent/VacAgent.java</file>
             <file>file:/home/eddy/Downloads/PROJECT-3/VacWorldProj/src/vacworld/VacuumState.java</file>
+            <file>file:/home/eddy/Downloads/PROJECT-3/VacWorldProj/src/myagent/MyVector.java</file>
             <file>file:/home/eddy/Downloads/PROJECT-3/VacWorldProj/src/vacworld/VacPercept.java</file>
             <file>file:/home/eddy/Downloads/PROJECT-3/VacWorldProj/src/vacworld/VacuumWorld.java</file>
             <file>file:/home/eddy/Downloads/PROJECT-3/VacWorldProj/src/vacworld/Direction.java</file>
+            <file>file:/home/eddy/Downloads/PROJECT-3/VacWorldProj/src/myagent/Planner.java</file>
+            <file>file:/home/eddy/Downloads/PROJECT-3/VacWorldProj/src/vacworld/SuckDirt.java</file>
+            <file>file:/home/eddy/Downloads/PROJECT-3/VacWorldProj/src/myagent/LocationInformation.java</file>
+            <file>file:/home/eddy/Downloads/PROJECT-3/VacWorldProj/src/myagent/InternalState.java</file>
         </group>
     </open-files>
 </project-private>
